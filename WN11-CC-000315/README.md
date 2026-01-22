@@ -4,6 +4,10 @@ Description
 
 This STIG ensures that the Windows Installer feature "Always install with elevated privileges" is disabled on Windows 11 systems. Disabling this setting prevents MSI installer packages from running with administrative permissions unless explicitly authorized.
 
+Performed an initial vulnerability and compliance baseline scan.
+<img width="940" height="359" alt="image" src="https://github.com/user-attachments/assets/f4970bf1-4bb9-47e9-8c5e-4840e1ee338a" />
+
+
 Risk / Impact
 
 If this setting is enabled, standard users can install MSI packages with elevated privileges. This creates a local privilege escalation risk and may allow attackers to install malicious software or fully compromise the system.
@@ -11,9 +15,9 @@ If this setting is enabled, standard users can install MSI packages with elevate
 Detection
 This finding was identified using a DISA STIG audit scan in Tenable.io against a Windows 11 virtual machine.
 
-## Remediation
+Remediation
 The registry value `AlwaysInstallElevated` was set to `0` under: HKLM\Software\Policies\Microsoft\Windows\Installer
 
-## Validation
+Validation
 A follow-up STIG scan in Tenable.io confirmed that the finding was remediated and is now in a passed state.
 <img width="1057" height="394" alt="image" src="https://github.com/user-attachments/assets/eb2bc6d5-dc11-405e-92ee-4c3f79555872" />
