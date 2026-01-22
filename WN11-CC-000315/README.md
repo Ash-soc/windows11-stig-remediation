@@ -16,3 +16,4 @@ The registry value `AlwaysInstallElevated` was set to `0` under: HKLM\Software\P
 
 ## Validation
 A follow-up STIG scan in Tenable.io confirmed that the finding was remediated and is now in a passed state.
+<img width="1057" height="394" alt="image" src="https://github.com/user-attachments/assets/eb2bc6d5-dc11-405e-92ee-4c3f79555872" />
