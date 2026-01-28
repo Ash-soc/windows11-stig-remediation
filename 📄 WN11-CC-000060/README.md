@@ -73,5 +73,15 @@ A follow-up compliance scan confirmed the control was successfully remediated.
 
 ## References
 
-- DISA STIG Viewer – Windows 11 STIG  
-- Tenable.io Documentation
+- DISA Security Technical Implementation Guide (STIG) – Microsoft Windows 11  
+  https://public.cyber.mil/stigs/
+
+- DISA STIG Viewer – Windows 11  
+  https://www.stigviewer.com/stig/windows_11/
+
+- Microsoft Windows Security Policy Documentation  
+  https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/security-options
+
+- Tenable Nessus Documentation  
+  https://docs.tenable.com/
+
