@@ -1,64 +1,129 @@
 # WN11-CC-000326 – PowerShell Script Block Logging
 
-This folder documents the remediation of Windows 11 STIG control WN11-CC-000326, which requires PowerShell Script Block Logging to be enabled.
+This repository documents remediation and validation steps for Windows 11 STIG controls performed in a controlled lab environment. Validation is confirmed through policy review, registry inspection, and compliance re-scan results.
 
-Tested on the Win11-VM01 sandbox environment.
-
----
-
-## Description
-
-PowerShell Script Block Logging records the full contents of PowerShell scripts and commands as they are executed, including dynamically generated or obfuscated code. Because PowerShell is a trusted and powerful tool built into Windows, it is commonly abused by attackers during post-exploitation.
+**Test Environment:**  
+Win11-VM01 (Windows 11 Virtual Machine)
 
 ---
 
-## Before Remediation
+## 🔎 Description
 
-🖼️ **Before Scan Screenshot**  
-*Insert Tenable.io scan showing this control as non-compliant.*
+PowerShell Script Block Logging records the full contents of PowerShell commands and scripts as they execute, including dynamically generated or obfuscated code.
 
-`before-scan.png`
+PowerShell is a trusted administrative tool built into Windows and is frequently abused by attackers during:
 
----
+- Post-exploitation activity  
+- Lateral movement  
+- Fileless malware execution  
+- Credential harvesting  
+- Persistence mechanisms  
 
-## Risk / Impact
+When enabled, activity is logged as:
 
-Without Script Block Logging enabled, malicious PowerShell activity may execute without sufficient forensic evidence. This limits the SOC’s ability to detect, investigate, and respond to PowerShell-based attacks.
+**Event ID 4104 – PowerShell Script Block Logging**
 
----
+Log Location:
+```
 
-## Detection
+Applications and Services Logs → Microsoft → Windows → PowerShell → Operational
 
-This finding was identified using a DISA Windows 11 STIG compliance scan performed with Tenable.io.
-
----
-
-## Remediation
-
-PowerShell Script Block Logging was enabled using Group Policy.
-
-Computer Configuration → Administrative Templates → Windows Components → Windows PowerShell → Turn on PowerShell Script Block Logging
+```
 
 ---
 
-## Validation
+## 🖼️ Before Remediation
 
-🖼️ **After Scan Screenshot**  
-*Insert Tenable.io scan confirming compliance.*
-
-`after-scan.png`
-
-A follow-up scan confirmed the system is compliant with WN11-CC-000326.
+The DISA STIG compliance scan identified Script Block Logging as not configured in accordance with STIG requirements.
 
 ---
 
-## SOC Interview Explanation
+## ⚠️ Risk / Impact
 
-Script Block Logging allows SOC analysts to see the exact PowerShell commands that were executed, which is critical for investigating fileless and post-exploitation attacks.
+Without Script Block Logging enabled:
+
+- Malicious PowerShell execution may go undetected  
+- Fileless attacks leave minimal forensic evidence  
+- SOC analysts lack visibility into executed commands  
+- Incident response investigations are significantly hindered  
+
+Because PowerShell is commonly used in modern attacks, disabling logging reduces defensive visibility.
 
 ---
 
-## References
+## 🔍 Detection
 
-DISA STIG Viewer – Windows 11 STIG  
-Tenable.io Documentation
+This finding was identified through:
+
+- DISA Windows 11 STIG compliance scan  
+- Tenable vulnerability assessment  
+- Group Policy configuration review  
+
+---
+
+## 🛠️ Remediation
+
+Script Block Logging was enabled using Group Policy.
+
+Path:
+
+```
+
+Computer Configuration
+→ Administrative Templates
+→ Windows Components
+→ Windows PowerShell
+→ Turn on PowerShell Script Block Logging
+
+```
+
+The setting was configured to:
+
+```
+
+Enabled
+
+```
+
+---
+
+## ✅ Validation
+
+1️⃣ Group Policy was reviewed to confirm the setting is enabled.  
+
+2️⃣ A test PowerShell command was executed to verify logging.  
+
+3️⃣ Event ID **4104** was confirmed in:
+
+```
+
+Applications and Services Logs
+→ Microsoft
+→ Windows
+→ PowerShell
+→ Operational
+
+```
+
+---
+
+## 🖼️ After Remediation
+
+A follow-up STIG compliance scan confirmed the system is compliant with WN11-CC-000326.
+
+---
+
+> “PowerShell Script Block Logging allows SOC analysts to see the exact commands executed on a system, including obfuscated or dynamically generated scripts. This is critical for detecting fileless malware and post-exploitation techniques. Without it, malicious PowerShell activity may execute without sufficient forensic visibility.”
+
+---
+
+## 📚 References
+
+- DISA Windows 11 STIG  
+  https://public.cyber.mil/stigs/
+
+- Microsoft PowerShell Logging Documentation  
+  https://learn.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-logging
+
+- Tenable Documentation  
+  https://docs.tenable.com/
