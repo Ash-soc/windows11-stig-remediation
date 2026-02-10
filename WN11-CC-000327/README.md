@@ -1,59 +1,127 @@
 # WN11-CC-000327 – PowerShell Transcription
 
-This folder documents the remediation of Windows 11 STIG control WN11-CC-000327, which requires PowerShell Transcription to be enabled.
+This folder documents the remediation of Windows 11 STIG control **WN11-CC-000327**, which requires PowerShell Transcription to be enabled.
 
-Tested on the Win11-VM01 sandbox environment.
+This control enhances visibility into PowerShell activity by capturing full command sessions for investigative and forensic purposes.
 
----
-
-## Description
-
-PowerShell Transcription captures full PowerShell sessions, including command input and output, providing context during security investigations.
+**Test Environment:**  
+Win11-VM01 (Windows 11 Virtual Machine)
 
 ---
 
-## Before Remediation
+## 🔎 Description
 
-🖼️ **Before Scan Screenshot**
+PowerShell Transcription records full PowerShell sessions, including:
 
-`before-scan.png`
+- Command input  
+- Command output  
+- Errors generated during execution  
 
----
+Unlike Script Block Logging (Event ID 4104), which captures executed commands, transcription provides full session context, making it valuable during incident response and forensic investigations.
 
-## Risk / Impact
-
-Without transcription enabled, important context around PowerShell activity may be missing during incident response.
-
----
-
-## Detection
-
-Identified using a DISA Windows 11 STIG compliance scan with Tenable.io.
+Transcripts are saved as text files to a designated directory.
 
 ---
 
-## Remediation
+## ⚠️ Risk / Impact
 
-PowerShell Transcription was enabled via Group Policy.
+Without PowerShell Transcription enabled:
 
-Computer Configuration → Administrative Templates → Windows Components → Windows PowerShell → Turn on PowerShell Transcription
+- SOC teams lose context around PowerShell activity  
+- Command output is not preserved  
+- Attack timelines become harder to reconstruct  
+- Post-exploitation activity may lack supporting forensic evidence  
 
----
-
-## Validation
-
-🖼️ **After Scan Screenshot**
-
-`after-scan.png`
+Since PowerShell is frequently used in modern attacks, lack of session logging reduces investigative capability.
 
 ---
 
-## SOC Interview Explanation
+## 🔍 Detection
 
-PowerShell Transcription helps SOC analysts reconstruct full attack timelines by showing entire PowerShell sessions.
+This control was identified as non-compliant during:
+
+- DISA Windows 11 STIG compliance scan  
+- Tenable vulnerability assessment  
+- Group Policy configuration review  
+
+The required policy was either not configured or not enforced.
 
 ---
 
-## References
+## 🛠️ Remediation
 
-DISA STIG Viewer – Windows 11 STIG
+PowerShell Transcription was enabled using Group Policy.
+
+Path:
+
+```
+
+Computer Configuration
+→ Administrative Templates
+→ Windows Components
+→ Windows PowerShell
+→ Turn on PowerShell Transcription
+
+```
+
+The setting was configured to:
+
+```
+
+Enabled
+
+```
+
+Additional configuration:
+
+- A secure transcript output directory was defined
+- Transcripts configured to include invocation headers (recommended for forensic clarity)
+
+---
+
+## ✅ Validation
+
+Validation was performed through:
+
+1️⃣ Group Policy review to confirm the setting is enabled  
+
+2️⃣ Registry verification under:
+
+```
+
+HKLM\Software\Policies\Microsoft\Windows\PowerShell\Transcription
+
+```
+
+3️⃣ Executing a test PowerShell session and confirming transcript file creation in the configured directory  
+
+Transcript files were successfully generated and contained full session activity.
+
+---
+
+## 📊 Technical Details
+
+**Registry Path:**
+```
+
+HKLM\Software\Policies\Microsoft\Windows\PowerShell\Transcription
+
+```
+
+**Key Values:**
+- EnableTranscripting = 1 (DWORD)  
+- OutputDirectory = <Defined Path>  
+- EnableInvocationHeader = 1 (Optional but recommended)
+
+---
+> “PowerShell Transcription allows SOC analysts to reconstruct full PowerShell sessions, including command output. This is critical during investigations because it provides context around what an attacker executed and what the result was. Combined with Script Block Logging, it significantly improves visibility into fileless and post-exploitation activity.”
+
+---
+
+## 📚 References
+
+- DISA Windows 11 STIG  
+  https://public.cyber.mil/stigs/
+
+- Microsoft PowerShell Transcription Documentation  
+  https://learn.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-logging
