@@ -1,20 +1,8 @@
-
 # WN11-CC-000315 – Always Install with Elevated Privileges
 
 This folder covers **Windows 11 STIG control WN11-CC-000315**, which ensures that the Windows Installer feature **"Always install with elevated privileges"** is disabled. Disabling this setting prevents MSI installer packages from running with administrative permissions unless explicitly authorized.  
 
 Tested on the Win11-VM01 sandbox environment.
-
----
-
-## Table of Contents
-- [Description](#description)
-- [Risk / Impact](#risk--impact)
-- [Detection](#detection)
-- [Remediation](#remediation)
-- [Validation](#validation)
-- [References](#references)
-
 ---
 
 ## Description
@@ -77,8 +65,3 @@ Confirms the registry change was applied successfully.
 * [Tenable.io Documentation](https://www.tenable.com/products/tenable-io)
 
 ---
-
-*Notes:*
-
-* All testing was performed in a controlled lab environment.
-* Screenshots reflect scan results from the test VM and may differ in other environments.
